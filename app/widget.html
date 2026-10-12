@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Fee Alert</title>
+  <link rel="stylesheet" href="./css/index.css" />
+  <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+</head>
+<body>
+  <main class="widget-container">
+    <section class="alert-card" id="feeAlert" role="alert">
+      <!-- Continuous scanning overlay -->
+      <div class="scan-line" aria-hidden="true"></div>
+
+      <!-- Radar ping icon wrapper -->
+      <div class="icon-wrapper">
+        <div class="radar-ring ring-1"></div>
+        <div class="radar-ring ring-2"></div>
+        <div class="alert-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 3.75h7l4 4v5.5M14 3.75v4h4"
+                  stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 12h5M7 15.5h3"
+                  stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round"/>
+            <circle cx="17" cy="17" r="4.2"
+                    fill="currentColor"/>
+            <path d="M17 14.9v2.5m0 1.3v.1"
+                  stroke="#FFFFFF" stroke-width="1.5"
+                  stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="alert-content">
+        <div class="heading-row">
+          <h2>Professional Fee Missing</h2>
+          <span class="live-pulse-dot" title="Active Alert"></span>
+        </div>
+        <p>
+          The <strong>TLZ Professional Fee</strong> hasn’t been added to this record yet. Please update the line items to include it.
+        </p>
+        <p id="statusMessage" class="status-message" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
