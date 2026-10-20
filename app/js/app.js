@@ -1,7 +1,8 @@
 /* TLZ Professional Fee widget
    - Receives the Deal ID from the Client Script
-   - Captures the exclusion reason
-   - Returns { action: "submit", reason } directly to the Client Script
+   - Shows a notice only (no input field)
+   - Returns { action: "submit" } (Proceed) or { action: "cancel" } (Edit Quote)
+     directly to the Client Script
 */
 
 const SELECTORS = {
@@ -10,8 +11,6 @@ const SELECTORS = {
   popupMessage: "popupMessage",
   loaderText: "loader-text"
 };
-
-const MAX_LENGTH = 1990;
 
 let currentRecordId = null; // Deal ID (from Deal_Name)
 let _toastTimeout = null;
@@ -43,7 +42,7 @@ function _ensureLoaderCard() {
   return card;
 }
 
-function showLoader(text = "Saving reason...") {
+function showLoader(text = "Processing...") {
   const overlay = document.getElementById("loader-overlay");
   if (!overlay) return;
 
@@ -62,7 +61,7 @@ function showLoader(text = "Saving reason...") {
   overlay.setAttribute("aria-hidden", "false");
 }
 
-function showLoaderSuccess(text = "Saved") {
+function showLoaderSuccess(text = "Done") {
   const overlay = document.getElementById("loader-overlay");
   if (!overlay) return;
   const card = _ensureLoaderCard();
@@ -145,83 +144,35 @@ function closeWidget(payload) {
   console.warn("No close method available. typeof $Client =", typeof $Client);
 }
 
+/* ---------- Edit Quote (cancel) ---------- */
 function editQuote() {
   if (_isSubmitting) return;
   hideLoader();
   closeWidget({ action: "cancel" });
 }
 
-/* ---------- Validation ---------- */
-function setNotesError(message) {
-  const notesInput = document.getElementById("notesInput");
-  const errorMsg = document.getElementById("error-msg");
-  if (errorMsg) {
-    const textSpan = errorMsg.querySelector(".error-text") || (() => {
-      const s = document.createElement("span");
-      s.className = "error-text";
-      errorMsg.appendChild(s);
-      return s;
-    })();
-
-    textSpan.textContent = " " + message;
-    errorMsg.classList.remove("hidden");
-  }
-  if (notesInput) {
-    notesInput.classList.add("input-error");
-    notesInput.focus();
-  }
-}
-
-function clearNotesError() {
-  const notesInput = document.getElementById("notesInput");
-  const errorMsg = document.getElementById("error-msg");
-  if (!notesInput) return;
-  const v = notesInput.value.trim();
-  if (v && v.length <= MAX_LENGTH) {
-    if (errorMsg) errorMsg.classList.add("hidden");
-    notesInput.classList.remove("input-error");
-  }
-}
-
-/* ---------- Submit ---------- */
-async function submitQuote() {
+/* ---------- Proceed (no validation, no reason) ---------- */
+async function proceedQuote() {
   if (_isSubmitting) return;
 
-  const notesInput = document.getElementById("notesInput");
-  if (!notesInput) {
-    showPopup("Error", "Notes input not found.");
-    return;
-  }
-
-  const notesValue = notesInput.value.trim();
-
-  if (!notesValue) {
-    setNotesError("Please provide a reason for excluding the TLZ Professional Fee before submitting.");
-    return;
-  }
-  if (notesValue.length > MAX_LENGTH) {
-    setNotesError(`Reason cannot exceed ${MAX_LENGTH} characters. Current length: ${notesValue.length}`);
-    return;
-  }
-
   _isSubmitting = true;
-  showLoader("Saving reason...");
+  showLoader("Processing...");
 
   try {
-    showLoaderSuccess("Saved");
-    showToast("Saved", "Reason recorded successfully.", "success");
+    showLoaderSuccess("Done");
+    showToast("Proceeding", "Saving the quotation.", "success");
 
-    // Pass the reason back to the Client Script to populate the quote field
+    // Same flow as before, but no reason is passed back
     setTimeout(() => {
       hideLoader();
-      closeWidget({ action: "submit", reason: notesValue });
+      closeWidget({ action: "submit" });
     }, 1100);
 
   } catch (err) {
     _isSubmitting = false;
     hideLoader();
-    console.error("Submit error:", err);
-    showPopup("Submission failed", "Could not process: " + (err?.message || JSON.stringify(err)));
+    console.error("Proceed error:", err);
+    showPopup("Action failed", "Could not process: " + (err?.message || JSON.stringify(err)));
   }
 }
 
@@ -270,5 +221,4 @@ function showPopup(titleText, message) {
 }
 
 window.editQuote = editQuote;
-window.submitQuote = submitQuote;
-window.clearNotesError = clearNotesError;
+window.proceedQuote = proceedQuote;

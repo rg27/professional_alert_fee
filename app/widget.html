@@ -29,32 +29,14 @@
           </svg>
         </div>
         <div class="notice-text-wrap">
-          <strong class="notice-heading">Justification Required: TLZ Professional Fee</strong>
+          <strong class="notice-heading" id="heading">Justification Required: TLZ Professional Fee</strong>
           <p class="notice-text" id="instruction-text">
-            We noticed that the quotation associated with this prospect does not include the TLZ Professional Fee, as required under company policy.
+            Please note that this quotation does not include the TLZ Professional Fee, which is required under company policy.
           </p>
           <p class="notice-text">
-            Please provide a clear explanation in the section below justifying why the quotation was processed without this fee.
+            If you proceed without including this fee, you will be required to provide a justification at a later stage for documentation and compliance purposes.
           </p>
         </div>
-      </div>
-
-      <div class="notes-section">
-        <label for="notesInput" class="notes-label-row">
-          <span class="notes-label-left">
-            <span class="notes-dot"></span>
-            <span id="heading">Reason for Excluding the TLZ Professional Fee</span>
-            <span class="notes-asterisk">*</span>
-          </span>
-          <span class="mandatory-badge">Required</span>
-        </label>
-
-        <textarea id="notesInput" rows="4" maxlength="1990" placeholder="Explain why the TLZ Professional Fee cannot be added to this quotation..." oninput="clearNotesError()" aria-required="true"></textarea>
-
-        <span id="error-msg" class="error-msg hidden" role="alert" aria-live="assertive">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          <span class="error-text">A reason is required before submitting.</span>
-        </span>
       </div>
 
       <div class="btn-row">
@@ -64,11 +46,11 @@
           </svg>
           Edit Quote
         </button>
-        <button onclick="submitQuote()" class="btn btn-primary" type="button" aria-label="Submit reason">
+        <button onclick="proceedQuote()" class="btn btn-primary" type="button" aria-label="Proceed without the TLZ Professional Fee">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          Submit Reason
+          Proceed
         </button>
       </div>
     </div>
